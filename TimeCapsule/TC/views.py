@@ -6,11 +6,19 @@ from .models import TimeCapsule
 def home(request):
     return render(request, "TC/home.html")
 
-def viewCapsules(request):
+def publicCapsules(request):
     capsules = TimeCapsule.objects.all()
-    publicCapsules = [cap for cap in capsules if cap.status is 'public']
-    print(publicCapsules)
-    return HttpResponse('ok')
+    #print(capsules)
+    if(capsules is not None):
+        publicCapsules = [cap for cap in capsules if cap.status == 'public']
+    return render(request,'TC/Capsule.html',{'pc':publicCapsules})
+
+def privateCapsules(request):
+    capsules = TimeCapsule.objects.all()
+    if(capsules is not None):
+        privateCapsules = [cap for cap in capsules if cap.status == 'private']
+    return render(request,'TC/privateCapsule.html',{'pc':privateCapsules})
+
 
 def loginhandle(request):
     return render(request,"auth/login.html")

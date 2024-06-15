@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block css %}
+
+{% endblock css %}
+
+{% block body %}
+
+<div class="p-5 container">
+    <div class="row-lg-12  text-center" >
+        <a class="btn btn-outline-info" href="{% url "publicCapsules" %}" >Public Capsules</a>
+        <a class="btn btn-outline-info" href="{% url "privateCapsules" %}" >Private Capsules</a>
+    </div>
+</div>
+
+{% endblock body %}
+
+{% block script %}
+
+<script src="{% static 'scripts/tabs.js'%}"></script>
+<script>
+
+</script>
+
+{% endblock script %}

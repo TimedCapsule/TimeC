@@ -5,5 +5,6 @@ from .import views
 urlpatterns = [
     path('',views.home, name="home"),
     path('login',views.loginhandle, name="loginhandle"),
-    path('capsules',views.viewCapsules,name="viewCapsules")
+    path('publiccapsules/',views.publicCapsules,name="publicCapsules"),
+    path('privatecapsules/',views.privateCapsules,name="privateCapsules"),
 ]
