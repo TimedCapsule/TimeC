@@ -11,3 +11,9 @@ def viewCapsules(request):
     publicCapsules = [cap for cap in capsules if cap.status is 'public']
     print(publicCapsules)
     return HttpResponse('ok')
+
+def loginhandle(request):
+    return render(request,"auth/login.html")
+
+def signUphandle(request):
+    return render(request,"auth/signup.html")
