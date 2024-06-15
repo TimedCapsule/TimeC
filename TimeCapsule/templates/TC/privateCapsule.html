@@ -12,6 +12,20 @@
         <a class="btn btn-outline-info" href="{% url "privateCapsules" %}" >Private Capsules</a>
     </div>
     <h5>Showing Private Capsules</h5>
+    <hr>
+    {% for item in pc %}
+    <div class="card" style="width: 18rem;">
+        <div class="card-body">
+          <h5 class="card-title">Author:- {{item.user.username}}</h5>
+          {% if item.future_date.date == today_date %}
+          <a href="#" class="btn btn-success">Open</a>
+          {% else %}
+          <a href="#" class="btn btn-danger disabled">Sealed till - {{item.future_date.date}}</a>
+          {% endif %}
+          
+        </div>
+      </div>
+    {% endfor %}
 </div>
 
 {% endblock body %}

@@ -4,6 +4,7 @@ from .models import TimeCapsule
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
+import datetime
 # Create your views here.
 
 def home(request):
@@ -14,13 +15,18 @@ def publicCapsules(request):
     #print(capsules)
     if(capsules is not None):
         publicCapsules = {cap for cap in capsules if cap.status == 'public'}
-    return render(request,'TC/Capsule.html',{'pc':publicCapsules})
+        for i in publicCapsules:
+            print(i.future_date.date())
+            print(i.future_date.time())
+        today_date = datetime.date.today()
+    return render(request,'TC/Capsule.html',{'pc':publicCapsules,'today_date':today_date})
 
 def privateCapsules(request):
     capsules = TimeCapsule.objects.all()
     if(capsules is not None):
         privateCapsules = [cap for cap in capsules if cap.status == 'private']
-    return render(request,'TC/privateCapsule.html',{'pc':privateCapsules})
+        today_date = datetime.date.today()
+    return render(request,'TC/privateCapsule.html',{'pc':privateCapsules,'today_date':today_date})
 
 
 def loginhandle(request):
