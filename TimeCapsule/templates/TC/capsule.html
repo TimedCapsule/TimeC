@@ -17,7 +17,8 @@
     {% for item in pc %}
     <div class="card" style="width: 18rem;">
         <div class="card-body">
-          <h5 class="card-title">Author:- {{item.user.username}}</h5>
+          <h3 class="">{{item.title}}</h3>
+          <h6 class="card-title">Creator:- {{item.user.username}}</h6>
           {% if item.future_date.date == today_date %}
           <a href="#" class="btn btn-success">Open</a>
           {% else %}
