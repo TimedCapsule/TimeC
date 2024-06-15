@@ -1,0 +1,48 @@
+{% load static %}
+{% block css %}
+
+<!-- Bootstrap CSS -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+<link rel="stylesheet" href="{% static "css/login.css" %}">
+
+{% endblock css %}
+
+{% block body %}
+
+<div class="login" style="background-image: url('https://www.google.com/imgres?q=login%20page%20background%20images&imgurl=https%3A%2F%2Fimg.freepik.com%2Fpremium-vector%2Fgeometric-gradient-technology-background_23-2149110132.jpg&imgrefurl=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Flogin-background&docid=Ya57M7GHXqD0uM&tbnid=FvNI1EBCe2lkDM&vet=12ahUKEwi80N_Dj92GAxXBSGwGHVOxB3EQM3oECGMQAA..i&w=626&h=417&hcb=2&ved=2ahUKEwi80N_Dj92GAxXBSGwGHVOxB3EQM3oECGMQAA')">
+    <div class="container my-4">
+        <div class="row mt-4 mb-5">
+            <div class="col-md-6 m-auto">
+                <div class="card border-rounded shadow m-auto">
+                    <h2 class="m-auto my-4">SignUp Here</h2>
+                    <hr>
+                    <form class="mx-4 my-2" action="/oksignup" method="POST">
+                        {% csrf_token %}
+                        <div class="mb-3">
+                            <label for="exampleInputEmail1" class="form-label">Username</label>
+                            <input type="text" name="username" class="form-control" placeholder="Enter your username" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Email address</label>
+                          <input type="email" name="email" class="form-control" placeholder="Enter your email" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        </div>
+                        <div class="mb-3">
+                          <label for="exampleInputPassword1" class="form-label">Password</label>
+                          <input type="password" name="pass1" class="form-control" placeholder="Enter your password" id="exampleInputPassword1">
+                        </div>
+                        <div class="mb-3">
+                            <label for="exampleInputPassword1" class="form-label">Confirm Password</label>
+                            <input type="password" name="pass2" class="form-control" placeholder="Confirm your password" id="exampleInputPassword1">
+                          </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <img src="https://img.lovepik.com/photo/45009/7677.jpg_wh860.jpg" height="600px" width="600px" >
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

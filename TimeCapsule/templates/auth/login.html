@@ -11,23 +11,24 @@
 
 <div class="login" style="background-image: url('https://www.google.com/imgres?q=login%20page%20background%20images&imgurl=https%3A%2F%2Fimg.freepik.com%2Fpremium-vector%2Fgeometric-gradient-technology-background_23-2149110132.jpg&imgrefurl=https%3A%2F%2Fwww.freepik.com%2Ffree-photos-vectors%2Flogin-background&docid=Ya57M7GHXqD0uM&tbnid=FvNI1EBCe2lkDM&vet=12ahUKEwi80N_Dj92GAxXBSGwGHVOxB3EQM3oECGMQAA..i&w=626&h=417&hcb=2&ved=2ahUKEwi80N_Dj92GAxXBSGwGHVOxB3EQM3oECGMQAA')">
     <div class="container">
-        <div class="row m-4 mb-5">
+        <div class="row mt-4 mb-5">
             <div class="col-md-6">
-                <img src="{% static "img/download.jpeg" %}" height="700px" width="500px" >
+                <img src="https://img.lovepik.com/photo/45010/1922.jpg_wh300.jpg" height="600px" width="600px" >
             </div>
             <div class="col-md-6 m-auto">
                 <div class="card border-rounded shadow m-auto">
                     <h2 class="m-auto my-2">Login Here</h2>
                     <hr>
-                    <form class="mx-4 my-4">
+                    <form class="mx-4 my-4" action="/oklogin" method="POST">
+                        {% csrf_token %}
                         <div class="mb-3">
-                          <label for="exampleInputEmail1" class="form-label">Email address</label>
-                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-                          <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
+                          <label for="exampleInputEmail1" class="form-label">Username</label>
+                          <input type="text" name="username" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                          <div id="emailHelp" class="form-text">We'll never share your Details with anyone else.</div>
                         </div>
                         <div class="mb-3">
                           <label for="exampleInputPassword1" class="form-label">Password</label>
-                          <input type="password" class="form-control" id="exampleInputPassword1">
+                          <input type="password" name="password" class="form-control" id="exampleInputPassword1">
                         </div>
                         <P class="m-auto">Don't have Account <a href="/signup">Signup Here</a></p>
                         <br>
