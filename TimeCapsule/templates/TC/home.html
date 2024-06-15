@@ -1,10 +1,16 @@
 {% extends "base.html" %}
+{% load static %}
 {% block homeactive %} active {% endblock homeactive %}
 
 {% block css %}
 
 <style>
-
+    #home-sec{
+        display:flex;
+    }
+    #image{
+        mergin-left:30px;
+    }
 </style>
 
 {% endblock css %}
@@ -12,18 +18,19 @@
 {% block body %}
 <main>
     <section id="home-sec" class="flexible home-sec">
-        <div class="eye-grabber-img">
-          <img src="" alt="Image of Apples" />
-        </div>
-        <div class="eye-grabber">
-          <h1>Fresh, Crispy, Heavenly.</h1>
-          <h2>
-            100% Organic, vivid varieties of apples grown in Kashmir aka The
-            Heaven of Earth.
-          </h2>
-          <button class="btn" onclick="window.location.href = '#contact';">
-            Buy Now
-          </button>
+        <div class="row p-5">
+            <div class=" col col-md-4 eye-grabber-img">
+                <img id="image" height="400px" width="600px" src="{% static "img/sleep.png" %}" alt="Image of Apples" />
+              </div>
+              <div class="col col-md-8 p-5 eye-grabber">
+                
+                <h2>
+                  Patince is not the the ability to wait, But the ability to keep a good attitude while waiting
+                </h2>
+                <button class="btn" onclick="window.location.href = '#contact';">
+                  Seal your Capsule
+                </button>
+              </div>
         </div>
       </section>
 
