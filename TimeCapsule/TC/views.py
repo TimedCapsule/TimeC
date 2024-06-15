@@ -5,3 +5,9 @@ from django.contrib import messages
 
 def home(request):
     return render(request, "TC/home.html")
+
+def loginhandle(request):
+    return render(request,"auth/login.html")
+
+def signUphandle(request):
+    return render(request,"auth/signup.html")
