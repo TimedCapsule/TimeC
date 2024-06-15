@@ -10,11 +10,9 @@
         <li class="nav-item {% block homeactive %} {% endblock homeactive %}">
           <a class="nav-link text-light" href="">Home <span class="sr-only">(current)</span></a>
         </li> 
-        {% if user.is_authenticated %}
-        <li class="nav-item {% block Historyactive %} {% endblock Historyactive %}">
-            <a class="nav-link" href="">History</a>
-          </li>
-        {% endif %}
+        <li class="nav-item {% block capsulesactive %} {% endblock capsulesactive %}">
+          <a class="nav-link text-light" href="{% url "publicCapsules" %}">capsules <span class="sr-only">(current)</span></a>
+        </li> 
       </ul>
       
       {% if user.is_authenticated %}
