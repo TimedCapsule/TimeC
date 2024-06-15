@@ -13,7 +13,7 @@ def publicCapsules(request):
     capsules = TimeCapsule.objects.all()
     #print(capsules)
     if(capsules is not None):
-        publicCapsules = [cap for cap in capsules if cap.status == 'public']
+        publicCapsules = {cap for cap in capsules if cap.status == 'public'}
     return render(request,'TC/Capsule.html',{'pc':publicCapsules})
 
 def privateCapsules(request):
