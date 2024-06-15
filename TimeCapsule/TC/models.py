@@ -7,6 +7,7 @@ class TimeCapsule(models.Model):
         ('public' ,'public')
     ]
     user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="User")
+    title = models.TextField(max_length=50, default="")
     status = models.CharField(choices=status_choice,max_length=20)
     collaborators = models.ForeignKey(User,on_delete=models.CASCADE,related_name='shared_users',blank=True)
     created_at = models.TimeField(auto_now_add=True)
