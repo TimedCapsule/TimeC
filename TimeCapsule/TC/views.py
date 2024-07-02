@@ -10,6 +10,41 @@ import datetime
 def home(request):
     return render(request, "TC/home.html")
 
+def NewCapsule(request):
+    # all_Users = User.objects.all()
+    return render(request, "TC/NewCapsule.html")
+
+def NewCapsuleSave(request):
+    if(request.method == "POST"):
+        caps_title = request.POST.get('title')
+        caps_img1 = request.FILES.get('pic1')
+        caps_img2 = request.FILES.get('pic2')
+        caps_force_open_pass = request.POST.get('force_open_pass')
+        caps_mssg = request.POST.get('message')
+        caps_vid1 = request.FILES.get('vid1')
+        caps_vid2 = request.FILES.get('vid2')
+        caps_status = request.POST.get('status')
+        caps_seal_date = request.POST.get('sealed_date')
+
+        capsule = TimeCapsule(
+            user = request.user,
+            title = caps_title,
+            status = caps_status,
+            future_date = caps_seal_date,
+            text = caps_mssg,
+            force_open_pass = caps_force_open_pass,
+            image1 = caps_img1,
+            image2 = caps_img2,
+            video1 = caps_vid1,
+            video2 = caps_vid2,
+            collaborators = request.user,
+            is_sealed = True,
+            is_force_opened = False
+        )
+        capsule.save()
+        messages.success(request,"Capsule Created Successfully...")
+        return redirect('publicCapsules')
+
 def publicCapsules(request):
     capsules = TimeCapsule.objects.all()
     #print(capsules)
@@ -22,12 +57,38 @@ def publicCapsules(request):
     return render(request,'TC/Capsule.html',{'pc':publicCapsules,'today_date':today_date})
 
 def privateCapsules(request):
-    capsules = TimeCapsule.objects.all()
+    capsules = TimeCapsule.objects.filter(user = request.user)
     if(capsules is not None):
         privateCapsules = [cap for cap in capsules if cap.status == 'private']
         today_date = datetime.date.today()
     return render(request,'TC/privateCapsule.html',{'pc':privateCapsules,'today_date':today_date})
 
+def ForceOpen(request):
+    if request.method == 'POST':
+        capsule_id = request.POST.get('force_open_id')
+        capsule_pass = request.POST.get('force_open_password')
+
+        capsule = TimeCapsule.objects.get(id = capsule_id)
+        if(capsule.force_open_pass == capsule_pass):
+            # print(capsule_pass , "  " , capsule.force_open_pass)
+            capsule.is_force_opened = True
+            capsule.save()
+            cntxt = {"capsuleData":capsule}
+            messages.success(request,f'You Have Forcefully Opened the {capsule.title} Capsule....')
+            return render(request,"TC/CapsuleData.html",cntxt)
+        else:
+            messages.error(request,"Provided Password is Wrong...")
+            return redirect('privateCapsules')
+
+def publicData(request,id):
+    capsuleData = TimeCapsule.objects.get(id=id)
+    cntxt = {"capsuleData":capsuleData}
+    return render(request,"TC/CapsuleData.html",cntxt)
+
+def privateData(request,id):
+    capsuleData = TimeCapsule.objects.get(id=id)
+    cntxt = {"capsuleData":capsuleData}
+    return render(request,"TC/CapsuleData.html",cntxt)
 
 def loginhandle(request):
     return render(request,"auth/login.html")

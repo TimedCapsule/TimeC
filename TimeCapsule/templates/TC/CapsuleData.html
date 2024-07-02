@@ -2,10 +2,52 @@
 
 {% block body %}
 
-<div clas="container">
+<div class="p-5 container">
+    <div class="row my-4 text-center">
+        <div class="col-md-12">
+            <h2>Welcome to <b>"{{capsuleData.title}}"</b></h2>
+            <hr>
+        </div>
+    </div>
+    <h3 class="text-center pb-4">Your Sealed Pics...</h3>
     <div class="row">
-        <div class="col-md-6">
-            
+        <!-- Example of media card for images -->
+        <div class="col-md-4 media-card">
+            <img src="/media/{{capsuleData.image1}}" class="img-fluid mb-3" alt="Post Image">
+            <div class="card">
+                {% comment %} <div class="card-body">
+                    <p class="card-text">Image description or caption goes here.</p>
+                </div> {% endcomment %}
+            </div>
+        </div>
+        <div class="col-md-4 media-card">
+            <img src="/media/{{capsuleData.image2}}" class="img-fluid mb-3" alt="Post Image">
+            <div class="card">
+                {% comment %} <div class="card-body">
+                    <p class="card-text">Image description or caption goes here.</p>
+                </div> {% endcomment %}
+            </div>
+        </div>
+        <div class="col-md-4 media-card">
+            <img src="/media/{{capsuleData.image1}}" class="img-fluid mb-3" alt="Post Image">
+            <div class="card">
+                {% comment %} <div class="card-body">
+                    <p class="card-text">Image description or caption goes here.</p>
+                </div> {% endcomment %}
+            </div>
+        </div>
+    </div>
+    <br>
+    <h3 class="text-center pb-4">Your Sealed Videos...</h3>
+    <div class="col-md-6 media-card">
+        <div class="card">
+            <video controls class="img-fluid mb-3 card-video-top">
+                <source src="{{ capsuleData.video1.url }}" type="video/mp4">
+                Your browser does not support the video tag.
+            </video>
+            <div class="card-body">
+                <p class="card-text">Video description or caption goes here.</p>
+            </div>
         </div>
     </div>
 </div>

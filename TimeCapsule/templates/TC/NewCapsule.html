@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class="container">
+    <h2 class="text-center my-3">Fill Up Your Memories Here...</h2>
+    <hr>
+    <div class="row my-3">
+        <div class="card shadow col-md-11 mx-auto">
+            <div class="card-body">
+                <form action="{% url "new-capsule-save" %}" method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="title">Capsule Title:</label>
+                        <input type="text" class="form-control" name="title" >
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Pic 1:</label>
+                        <input type="file" class="form-control-file" name="pic1">
+                    </div>
+                    <div class="form-group">
+                        <label for="image">Pic 2:</label>
+                        <input type="file" class="form-control-file" name="pic2">
+                    </div>
+                    <div class="form-group">
+                        <label for="lesson_no">Force Open Password :</label>
+                        <input type="password" class="form-control" name="force_open_pass" >
+                    </div>
+                    <div class="form-group">
+                        <label for="lesson_no">Any Message :</label>
+                        <input type="text" class="form-control" name="message" >
+                    </div>
+                    <div class="form-group">
+                        <label for="instructor_image">Video 1:</label>
+                        <input type="file" class="form-control-file" name="vid1" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="instructor_image">Video 2:</label>
+                        <input type="file" class="form-control-file" id="" name="vid2" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Status">Status: </label>
+                        <br>
+                        <select name="status">
+                            <option name="public" value="public">Public</option>
+                            <option name="private" value="private">Private</option>
+                        </select> 
+                    </div>
+                    <div class="form-group">
+                        <label for="Status">Sealing till: </label>
+                        <br>
+                        <input type="date" name="sealed_date">
+                    </div>
+                    <input type="submit" class="btn btn-primary" value="Create">
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock body %}

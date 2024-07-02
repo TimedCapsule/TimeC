@@ -6,7 +6,7 @@
 {% endblock css %}
 
 {% block body %}
-<div class="p-5 container">
+<div class="p-5 container pb-4 pb-xl-7">
     <div class="row-lg-12  text-center" >
         <a class="btn btn-outline-info" href="{% url "publicCapsules" %}" >Public Capsules</a>
         <a class="btn btn-outline-info" href="{% url "privateCapsules" %}" >Private Capsules</a>
@@ -14,19 +14,63 @@
     <h5>Showing Private Capsules</h5>
     <hr>
     {% for item in pc %}
-    <div class="card" style="width: 18rem;">
-        <div class="card-body">
-            <h3 class="">{{item.title}}</h3>
-            <h5 class="card-title">Author:- {{item.user.username}}</h5>
-            {% if item.future_date.date == today_date %}
-            <a href="#" class="btn btn-success">Open</a>
-            {% else %}
-            <a href="#" class="btn btn-danger disabled">Sealed till - {{item.future_date.date}}</a>
-            {% endif %}
+    <div class="row row-cols-md-2 row-cols-xl-3 mb-6 mb-xl-3" style="display:flex;">
+        <div class="card shadow">
+            <div class="card-body">
+                <h3 class="">{{item.title}}</h3>
+                <h5 class="card-title">Author:- {{item.user.username}}</h5>
+                <p class="card-title">Created On:- {{item.created_at}}</p>
+                {% if item.is_force_opened %}
+                <a href="{% url "private-data" item.id %}" class="btn btn-success">Forcefully Opened</a>
+                {% elif item.future_date.date == today_date %}
+                <a href="{% url "private-data" item.id %}" class="btn btn-success">Open</a>
+                {% elif item.future_date.date < today_date %}
+                <a href="#" class="btn btn-danger disabled">expired</a>
+                {% else %}
+                <a href="#" class="btn btn-danger disabled">Sealed Til - {{item.future_date.date}}</a>
+                <button type="button" class="btn btn-warning text-dark" data-toggle="modal" data-target="#open-{{forloop.counter}}">
+                    Force Open
+                </button> 
+                {% endif %}
+            </div>
         </div>
-      </div>
+    </div>
     {% endfor %}
+    <hr>
+    <div class="text-center">
+        <h2>Create New Capsule</h2>
+        <a href="{% url "new-capsule" %}" class="btn btn-primary">Create</a>
+    </div>
 </div>
+
+{% for i in pc %}
+<div class="modal fade" id="open-{{forloop.counter}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header bg-warning">
+          <h5 class="modal-title" id="exampleModalLongTitle1">Remeinder force opening : <strong>{{i.title}}</strong></h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+            <form action="{% url "force-open" %}" method="post">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="exampleInputPassword1" class="form-label">Enter the Password....</label>
+                    <input type="text" class="form-control" name="force_open_id" value="{{i.id}}" hidden>
+                    <input type="password" class="form-control" name="force_open_password">
+                </div>
+                <button type="submit" class="btn btn-primary">Open</button>
+            </form>
+        </div>
+        {% comment %} <div class="modal-footer bg-danger">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div> {% endcomment %}
+      </div>
+    </div>
+</div>
+{% endfor %}
 
 {% endblock body %}
 
