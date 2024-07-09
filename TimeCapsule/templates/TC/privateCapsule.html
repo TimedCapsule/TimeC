@@ -13,32 +13,44 @@
     </div>
     <h5>Showing Private Capsules</h5>
     <hr>
-    {% for item in pc %}
-    <div class="row row-cols-md-2 row-cols-xl-3 mb-6 mb-xl-3" style="display:flex;">
-        <div class="card shadow">
-            <div class="card-body">
-                <h3 class="">{{item.title}}</h3>
-                <h5 class="card-title">Author:- {{item.user.username}}</h5>
-                <p class="card-title">Created On:- {{item.created_at}}</p>
-                {% if item.is_force_opened %}
-                <a href="{% url "private-data" item.id %}" class="btn btn-success">Forcefully Opened</a>
-                {% elif item.future_date.date == today_date %}
-                <a href="{% url "private-data" item.id %}" class="btn btn-success">Open</a>
-                {% elif item.future_date.date < today_date %}
-                <a href="#" class="btn btn-danger disabled">expired</a>
-                {% else %}
-                <a href="#" class="btn btn-danger disabled">Sealed Til - {{item.future_date.date}}</a>
-                <button type="button" class="btn btn-warning text-dark" data-toggle="modal" data-target="#open-{{forloop.counter}}">
-                    Force Open
-                </button> 
+    <div class="d-flex flex-wrap">
+        {% for item in pc %}
+            {% if forloop.first or forloop.counter|divisibleby:3 %}
+                {% if not forloop.first %}
+                    </div>
                 {% endif %}
+                <div class="row w-100 mb-3">
+            {% endif %}
+            <div class="m-auto col-md-6 m-2">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="">{{item.title}}</h3>
+                        <h5 class="card-title">Author:- {{item.user.username}}</h5>
+                        <p class="card-title">Created On:- {{item.created_at}}</p>
+                        {% if item.is_force_opened %}
+                            <a href="{% url "private-data" item.id %}" class="btn btn-success">Forcefully Opened</a>
+                        {% elif item.future_date.date == today_date %}
+                            <a href="{% url "private-data" item.id %}" class="btn btn-success">Open</a>
+                        {% elif item.future_date.date < today_date %}
+                            <a href="#" class="btn btn-danger disabled">expired</a>
+                        {% else %}
+                            <a href="#" class="btn btn-danger disabled">Sealed Til - {{item.future_date.date}}</a>
+                            <button type="button" class="btn btn-warning text-dark" data-toggle="modal" data-target="#open-{{forloop.counter}}">
+                                Force Open
+                            </button> 
+                        {% endif %}
+                    </div>
+                </div>
             </div>
-        </div>
+            {% if forloop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
     </div>
-    {% endfor %}
+    
     <hr>
     <div class="text-center">
-        <h2>Create New Capsule</h2>
+        <h2>Create New Private Capsule</h2>
         <a href="{% url "new-capsule" %}" class="btn btn-primary">Create</a>
     </div>
 </div>
@@ -48,7 +60,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header bg-warning">
-          <h5 class="modal-title" id="exampleModalLongTitle1">Remeinder force opening : <strong>{{i.title}}</strong></h5>
+          <h5 class="modal-title" id="exampleModalLongTitle1">Remeinder force opening : <strong>{{i.title}} </strong> : After this it will not be sealed...</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

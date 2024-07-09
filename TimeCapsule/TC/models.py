@@ -23,4 +23,12 @@ class TimeCapsule(models.Model):
 
     def __str__(self):
         return self.user.username + " " + self.title
+    
+class PublicCapsule(models.Model):
+    title = models.CharField(max_length=100)
+    contributers = models.ManyToManyField(TimeCapsule)
+
+    def __str__(self):
+        return '{}-No. of Contributers-{}'.format(self.title,self.contributers.count())
+
 

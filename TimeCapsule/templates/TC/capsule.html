@@ -14,20 +14,14 @@
     </div>
     <h5>Showing Public Capsules</h5>
     <hr>
-    {% for item in pc %}
+    {% for item in Capsule %}
     <div class="row row-cols-md-2 row-cols-xl-3 mb-6 mb-xl-3">
       <div class="card">
         <div class="card-body">
           <h3 class="">{{item.title}}</h3>
-            <h5 class="card-title">Author:- {{item.user.username}}</h5>
-            <p class="card-title">Created On :- {{item.created_at}}</p>
-            {% if item.future_date.date == today_date %}
-            <a href="{% url "private-data" item.id %}" class="btn btn-success">Open</a>
-            {% elif item.future_date.date < today_date %}
-            <a href="#" class="btn btn-danger disabled">expired</a>
-            {% else %}
-            <a href="#" class="btn btn-danger disabled">Sealed Til - {{item.future_date.date}}</a>
-            {% endif %}
+            <h5 class="card-title">Author :- {{item.user.username}}</h5>
+            <h5 class="card-title">No. of Contributers :- {{item.contributers.count}}</h5>
+            <a href="{% url "publicCapsulesCollection" item.id %}" class="btn btn-success">View Content</a>
         </div>
       </div>
     </div>

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+<div class="p-5 container">
+    <div class="row-lg-12  text-center" >
+        <a class="btn btn-outline-info" href="#" >{{capsule.title}}</a>
+    </div>
+    <h5>Welcome To {{capsule.title}} Capsule Collection </h5>
+    <hr>
+    <div class="d-flex flex-wrap">
+        {% for item in contributers %}
+            {% if forloop.first or forloop.counter|divisibleby:3 %}
+                {% if not forloop.first %}
+                    </div>
+                {% endif %}
+                <div class="row w-100 mb-3">
+            {% endif %}
+            <div class="m-auto col-md-6 m-2">
+                <div class="card shadow">
+                    <div class="card-body">
+                        <h3 class="">{{item.title}}</h3>
+                        <h5 class="card-title">Author:- {{item.user.username}}</h5>
+                        <p class="card-title">Created On:- {{item.created_at}}</p>
+                        {% if item.is_force_opened %}
+                            <a href="{% url "publicCapsulesCollectionData" capsule.id item.id %}" class="btn btn-success">Forcefully Opened</a>
+                        {% elif item.future_date.date == today_date %}
+                            <a href="{% url "publicCapsulesCollectionData" capsule.id item.id %}" class="btn btn-success">Open</a>
+                        {% elif item.future_date.date < today_date %}
+                            <a href="#" class="btn btn-danger disabled">expired</a>
+                        {% else %}
+                        <a href="#" class="btn btn-danger disabled">Sealed Til - {{item.future_date.date}}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% if forloop.last %}
+                </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock body %}

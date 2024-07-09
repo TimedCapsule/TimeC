@@ -1,10 +1,63 @@
 from django.shortcuts import render, redirect, HttpResponse
 from django.contrib import messages
-from .models import TimeCapsule
+from .models import TimeCapsule, PublicCapsule
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 import datetime
+# Requirements for sending email...
+from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
+from django.template.loader import render_to_string
+from django.utils.html import strip_tags
+from TimeCapsule.settings import EMAIL_HOST_USER
+from datetime import timedelta
+
+def is_one_day_more(future_date, today_date):
+    return future_date == today_date + timedelta(days=1)
+
+def mailing():
+    capsules = PublicCapsule.objects.all()
+    
+    for item in capsules:
+        for x in item.contributers.all():
+            today_date = datetime.date.today()
+            is_Opening_Tomorrow = is_one_day_more(x.future_date.date(), today_date)
+            
+            if is_Opening_Tomorrow:
+                subject = "Your TimeCapsule is Opening Tomorrow!"
+                html_content = render_to_string("Mails/CapsOpenReminder.html", {
+                    "title": x.title,
+                    "username": x.user.username
+                })
+                text_content = strip_tags(html_content)
+                recipient_list = [x.user.email]
+                
+                email = EmailMultiAlternatives(subject, text_content, EMAIL_HOST_USER, recipient_list)
+                email.attach_alternative(html_content, "text/html")
+                email.send()
+    
+    privCap = TimeCapsule.objects.all()
+    
+    for temp in privCap:
+        today_date = datetime.date.today()
+        is_Opening_Tomorrow = is_one_day_more(temp.future_date.date(), today_date)
+        
+        if is_Opening_Tomorrow:
+            subject = "Your TimeCapsule is Opening Tomorrow!"
+            html_content = render_to_string("Mails/CapsOpenReminder.html", {
+                "title": temp.title,
+                "username": temp.user.username
+            })
+            text_content = strip_tags(html_content)
+            recipient_list = [temp.user.email]
+            
+            email = EmailMultiAlternatives(subject, text_content, EMAIL_HOST_USER, recipient_list)
+            email.attach_alternative(html_content, "text/html")
+            email.send()
+
+mailing()
+
 # Create your views here.
 
 def home(request):
@@ -42,19 +95,37 @@ def NewCapsuleSave(request):
             is_force_opened = False
         )
         capsule.save()
+
+        subject = "New Capsule is Created."
+        html_content = render_to_string("Mails/NewCapsule.html",{
+            "title": caps_title,
+            "username": request.user.username,
+        })
+        text_content = strip_tags(html_content)
+        recipient_list = [request.user.email]
+        email = EmailMultiAlternatives(subject, text_content, EMAIL_HOST_USER, recipient_list)
+        email.attach_alternative(html_content, "text/html")
+        email.send()
         messages.success(request,"Capsule Created Successfully...")
         return redirect('publicCapsules')
 
 def publicCapsules(request):
-    capsules = TimeCapsule.objects.all()
-    #print(capsules)
-    if(capsules is not None):
-        publicCapsules = {cap for cap in capsules if cap.status == 'public'}
-        for i in publicCapsules:
-            print(i.future_date.date())
-            print(i.future_date.time())
-        today_date = datetime.date.today()
-    return render(request,'TC/Capsule.html',{'pc':publicCapsules,'today_date':today_date})
+    capsules = PublicCapsule.objects.all()
+    return render(request,'TC/Capsule.html',{'Capsule':capsules})
+
+def publicCapsulesCollection(request,id):
+    capsule = PublicCapsule.objects.get(id = id)
+    contributers = capsule.contributers.all()
+    today_date = datetime.date.today()
+    cntxt = {'capsule':capsule,'contributers':contributers,'today_date':today_date}
+    return render(request,"TC/capsuleCollection.html",cntxt)
+
+def publicCapsulesCollectionData(request,id,pk):
+    pub_cap = PublicCapsule.objects.get(id = id)
+    cap_data = pub_cap.contributers.get(id = pk)
+    cntxt = {"cap_data":cap_data}
+    today_date = datetime.date.today()
+    return render(request,"TC/CapsuleData.html",cntxt)
 
 def privateCapsules(request):
     capsules = TimeCapsule.objects.filter(user = request.user)
@@ -70,7 +141,6 @@ def ForceOpen(request):
 
         capsule = TimeCapsule.objects.get(id = capsule_id)
         if(capsule.force_open_pass == capsule_pass):
-            # print(capsule_pass , "  " , capsule.force_open_pass)
             capsule.is_force_opened = True
             capsule.save()
             cntxt = {"capsuleData":capsule}
@@ -79,11 +149,6 @@ def ForceOpen(request):
         else:
             messages.error(request,"Provided Password is Wrong...")
             return redirect('privateCapsules')
-
-def publicData(request,id):
-    capsuleData = TimeCapsule.objects.get(id=id)
-    cntxt = {"capsuleData":capsuleData}
-    return render(request,"TC/CapsuleData.html",cntxt)
 
 def privateData(request,id):
     capsuleData = TimeCapsule.objects.get(id=id)
